@@ -1,5 +1,7 @@
 [![NPM Version][npm-image]][npm-url]
-# Open-Fin-TS-JS-Client
+# Open-Fin-TS-JS-Client-Promise
+
+**[[FORK]] von [https://github.com/jschyma/open_fints_js_client](https://github.com/jschyma/open_fints_js_client "Open-Fin-TS-JS-Client")**
 
 FinTS/HBCI ist eine standardisierte Schnittstelle zur Kommunikation mit Banken von der Deutschen Kreditwirtschaft (DK).
 Es existieren derzeit drei Versionen der Schnittstelle.
@@ -31,45 +33,52 @@ JS im Browser ist ohne besondere Umwege(zB Browser Extensions) aufgrund der Arch
 
 ## Quick-Start
 Der einfachste Weg ist Open-Fin-TS-JS-Client über NPM durch eine Dependency in der package.json in ein Projekt einzubinden.
-Am folgenden Beispiel zum Laden von Kontoumsätzen wird gezeigt wie der Client zu bedienen ist.
+Am folgenden Beispiel zum Laden von Kontoumsätzen wird gezeigt wie der Client zu bedienen ist. Bitte beachten: für die keywords async/await und Promise ist die entsprechende Nodejs Version nötig >= 7.6
 
 ```js
 var FinTSClient = require("open-fin-ts-js-client");
-// 1. Definition der Bankenliste - Echte URLs sind hier http://www.hbci-zka.de/institute/institut_auswahl.htm erhältlich.
-var bankenliste = {
-		'12345678':{'blz':12345678,'url':"http://localhost:3000/cgi-bin/hbciservlet"},
-		"undefined":{'url':""}
-};
+// 1. Definition der Bankenliste - Echte URLs sind hier http://www.hbci-zka.de/institute/institut_auswahl.htm erhältlich. Für mehrere Urls ist ein Object nötig.
+var bankenliste = "http://localhost:3000/cgi-bin/hbciservlet"
 // 2. FinTSClient anlegen
 // BLZ: 12345678
 // Kunden-ID/Benutzerkennung: test1
 // PIN: 1234
 // Bankenliste siehe oben
-var client = new FinTSClient(12345678,"test1","1234",bankenliste);
-// 3. Verbindung aufbauen
-client.EstablishConnection(function(error){
-			if(error){
-				console.log("Fehler: "+error);
-			}else{
-				console.log("Erfolgreich Verbunden");
-				// 4. Kontoumsätze für das 1. Konto(client.konten[0]) laden
-				client.MsgGetKontoUmsaetze(client.konten[0].sepa_data,null,null,function(error2,rMsg,data){
-					if(error){
-						console.log("Fehler beim laden der Umsätze: "+error2);
-					}else{
-						// Alles gut
-						// 4. Umsätze darstellen
-						console.log(JSON.stringify(data));
-						// 5. Verbindung beenden
-						client.MsgEndDialog(function(error,recvMsg2){
-							// 6. Secure Daten im Objekt aus dem Ram löschen
-							client.closeSecure();
-							console.log("ENDE");
-						});
-					}
-				});
-			}
-		});
+var client = new FinTSClient(12345678, "test1", "1234", bankenliste);
+// start
+GetKontoUmsaetze()
+
+async function GetKontoUmsaetze () {
+  try{
+    // 3. Verbindung aufbauen
+    await client.EstablishConnection()
+    console.log('Erfolgreich Verbunden')
+
+    // 4. Kontoumsätze für alle Konten nacheinander laden
+    let daten=[]
+    for (let konto of client.konten) {
+      let data = await client.MsgGetKontoUmsaetze(konto.sepa_data, null, null)
+      daten.push(data)
+    }
+    // Alles gut
+    // 5. Umsätze darstellen
+    console.log(JSON.stringify(daten))
+
+    // 6. Zeige Salden aller Konten
+    for (let konto of client.konten) {
+      let saldo = await client.MsgGetSaldo(konto.sepa_data)
+      console.log('Saldo von Konto ' + konto.iban + ' ist ' + JSON.stringify(saldo.saldo.saldo))
+    }
+
+    // 7. Verbindung beenden
+    await client.MsgEndDialog()
+  }catch(exception){
+    console.error("Fehler: " + exception)
+  }
+  // 8. Secure Daten im Objekt aus dem Ram löschen
+  client.closeSecure()
+  console.log('ENDE')
+}
 ```
 
 ## API Beschreibung
