@@ -52,7 +52,7 @@ module.exports = function () {
       var sendMsg = null
       // 1. Schauen ob schon exitierender Dialog
       var dialogObj = me.getDialogFromMsg(recvMsg)
-      if (dialogObj == null) {
+      if (dialogObj === null) {
         // Initialisierung
         var r = me.handleDialogInit(recvMsg)
         if (r.e) {
@@ -75,33 +75,33 @@ module.exports = function () {
         }
       }
       // 2. weiter bearbeiten
-      if (sendtxt == null) {
+      if (sendtxt === null) {
         var ctrl = {
           'gmsg': {},
           'msgs': [],
           'content': []
         }
-        for (var i = 1; i != recvMsg.segments.length  1; i++) {
-          if (recvMsg.segments[i].name == 'HNHBK' ||
-             recvMsg.segments[i].name == 'HNHBS' ||
-             recvMsg.segments[i].name == 'HNSHA' ||
-             recvMsg.segments[i].name == 'HNSHK') {
+        for (var i = 1; i !== recvMsg.segments.length - 1; i++) {
+          if (recvMsg.segments[i].name === 'HNHBK' ||
+             recvMsg.segments[i].name === 'HNHBS' ||
+             recvMsg.segments[i].name === 'HNSHA' ||
+             recvMsg.segments[i].name === 'HNSHK') {
             // nichts tun
-          } else if (recvMsg.segments[i].name == 'HKIDN') {
+          } else if (recvMsg.segments[i].name === 'HKIDN') {
             if (!me.handleHKIDN(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) { break }
-          } else if (recvMsg.segments[i].name == 'HKVVB') {
+          } else if (recvMsg.segments[i].name === 'HKVVB') {
             if (!me.handleHKVVB(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) { break }
-          } else if (recvMsg.segments[i].name == 'HKSYN') {
+          } else if (recvMsg.segments[i].name === 'HKSYN') {
             if (!me.handleHKSYN(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) { break }
-          } else if (recvMsg.segments[i].name == 'HKEND') {
+          } else if (recvMsg.segments[i].name === 'HKEND') {
             if (!me.handleHKEND(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) { break }
-          } else if (recvMsg.segments[i].name == 'HKSPA') {
+          } else if (recvMsg.segments[i].name === 'HKSPA') {
             if (!me.handleHKSPA(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) { break }
-          } else if (recvMsg.segments[i].name == 'HKKAZ') {
+          } else if (recvMsg.segments[i].name === 'HKKAZ') {
             if (!me.handleHKKAZ(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) { break }
-          } else if (recvMsg.segments[i].name == 'HKCCS') {
+          } else if (recvMsg.segments[i].name === 'HKCCS') {
             if (!me.handleHKCCS(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) { break }
-          } else if (recvMsg.segments[i].name == 'HKTAN' && recvMsg.segments[i].vers == 5) {
+          } else if (recvMsg.segments[i].name === 'HKTAN' && recvMsg.segments[i].vers === 5) {
             if (!me.handleHKTAN(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) { break }
           }
         }
@@ -118,10 +118,10 @@ module.exports = function () {
           case 2:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[9010,NULL,"Verarbeitung nicht moglich"]]));break;
           case 3:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[9800,NULL,"Dialog abgebrochen!"]]));break; */
         }
-        for (var i = 0; i != ctrl.msgs.length; i++) {
+        for (var i = 0; i !== ctrl.msgs.length; i++) {
           sendMsg.addSeg(ctrl.msgs[i])
         }
-        for (var i = 0; i != ctrl.content.length; i++) {
+        for (var i = 0; i !== ctrl.content.length; i++) {
           sendMsg.addSeg(ctrl.content[i])
         }
       }
@@ -136,7 +136,7 @@ module.exports = function () {
 
   me.getDialogFromMsg = function (recvMsg) {
     var id = recvMsg.selectSegByName('HNHBK')[0].getEl(3)
-    if (id == '0') {
+    if (id === '0') {
       return null
     } else {
       var obj = me.dialogArray[id]
@@ -149,10 +149,10 @@ module.exports = function () {
     if (recvMsg.isSigned()) {
       var HNSHK = recvMsg.selectSegByName('HNSHK')[0]
       var HNSHA = recvMsg.selectSegByName('HNSHA')[0]
-      if (HNSHK.getEl(1).getEl(1) != 'PIN') { return false }// andere als PIN unterstützen wir nicht
+      if (HNSHK.getEl(1).getEl(1) !== 'PIN') { return false }// andere als PIN unterstützen wir nicht
       var pin = ''
       try { pin = HNSHA.getEl(3).getEl(1) } catch (e) { pin = HNSHA.getEl(3) }
-      return me.userDB[dialogObj.user].pin == pin
+      return me.userDB[dialogObj.user].pin === pin
     } else {
       return true
     }
@@ -190,7 +190,7 @@ module.exports = function () {
     // 0. Send Msg erstellen
     var sendMsg = me.createSendMsg(recvMsg, dialogObj)
     // 1. System ID setzen
-    if (dialogObj.userSysId == '0') {
+    if (dialogObj.userSysId === '0') {
       dialogObj.userSysId = 'userSysId'
     }
     var error = false
@@ -227,7 +227,7 @@ module.exports = function () {
     var bez = segment.nr
     ctrl.gmsg['3060'] = ['3060', '', 'Bitte beachten Sie die enthaltenen Warnungen/Hinweise']
     var msgArray = []
-    if (bpdVers != '78') {
+    if (bpdVers !== '78') {
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIBPA', 3, bez, ['78', ['280', me.myBlz], 'FinTSJSClient Test Bank', '1', '1', '300', '500']))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIKOM', 4, bez, [['280', me.myBlz], '1', ['3', Helper.convertJSTextTo(me.myUrl)], ['2', Helper.convertJSTextTo(me.myHost)]]))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HISHV', 3, bez, ['J', ['RDH', '3'], ['PIN', '1'], ['RDH', '9'], ['RDH', '10'], ['RDH', '7']]))
@@ -282,7 +282,7 @@ module.exports = function () {
 
       msgArray.push(['3050', '', 'BPD nicht mehr aktuell, aktuelle Version enthalten.'])
     }
-    if (updVers != '3') {
+    if (updVers !== '3') {
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIUPA', 4, bez, [dialogObj.user, '2', '3']))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIUPD', 6, bez, [['1', '', '280', me.myBlz], 'DE17123456780000000001', dialogObj.user, '', 'EUR', 'Fullname', '', 'Girokonto', '', ['HKSAK', '1'], ['HKISA', '1'], ['HKSSP', '1'], ['HKSAL', '1'], ['HKKAZ', '1'], ['HKEKA', '1'], ['HKCDB', '1'], ['HKPSP', '1'], ['HKCSL', '1'], ['HKCDL', '1'], ['HKPAE', '1'], ['HKPPD', '1'], ['HKCDN', '1'], ['HKCSB', '1'], ['HKCUB', '1'], ['HKQTG', '1'], ['HKSPA', '1'], ['HKDSB', '1'], ['HKCCM', '1'], ['HKCUM', '1'], ['HKCCS', '1'], ['HKCDE', '1'], ['HKCSE', '1'], ['HKDSW', '1'], ['HKPRO', '1'], ['HKSAL', '1'], ['HKKAZ', '1'], ['HKTUL', '1'], ['HKTUB', '1'], ['HKPRO', '1'], ['GKVPU', '1'], ['GKVPD', '1']]))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIUPD', 6, bez, [['2', '', '280', me.myBlz], 'DE87123456780000000002', dialogObj.user, '', 'EUR', 'Fullname', '', 'Tagesgeld', '', ['HKSAK', '1'], ['HKISA', '1'], ['HKSSP', '1'], ['HKSAL', '1'], ['HKKAZ', '1'], ['HKEKA', '1'], ['HKPSP', '1'], ['HKCSL', '1'], ['HKPAE', '1'], ['HKCSB', '1'], ['HKCUB', '1'], ['HKQTG', '1'], ['HKSPA', '1'], ['HKCUM', '1'], ['HKCCS', '1'], ['HKCSE', '1'], ['HKPRO', '1'], ['HKSAL', '1'], ['HKKAZ', '1'], ['HKTUL', '1'], ['HKTUB', '1'], ['HKPRO', '1'], ['GKVPU', '1'], ['GKVPD', '1']]))
@@ -355,14 +355,14 @@ module.exports = function () {
   me.tanReferenz = {}
   me.handleHKTAN = function (segment, ctrl, dialogObj, recvMsg) {
     // Segmentversion 3
-    if (segment.getEl(1) != '4') {
+    if (segment.getEl(1) !== '4') {
       var bez = segment.nr
       var id = segment.getEl(5)
       if (id in me.tanReferenz) {
         // Tan prüfen
         var tan = ''
         try { tan = recvMsg.selectSegByName('HNSHA')[0].getEl(3).getEl(2) } catch (e) {};
-        if (me.tanReferenz[id].tan == tan) {
+        if (me.tanReferenz[id].tan === tan) {
           return me.tanReferenz[id].cb(segment, ctrl, dialogObj, me.tanReferenz[id].seg, me.tanReferenz[id].nr)
         } else {
           ctrl.gmsg['3060'] = ['3060', '', 'Bitte beachten Sie die enthaltenen Warnungen/Hinweise']
