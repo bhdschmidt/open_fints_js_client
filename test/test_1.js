@@ -18,6 +18,7 @@
  *    Please contact Jens Schyma if you are interested in a commercial license.
  *
  */
+/* eslint-disable */
 var express = require('express')
 var http = require('http')
 var textBody = require('body')

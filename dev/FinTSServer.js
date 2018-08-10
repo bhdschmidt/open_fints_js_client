@@ -31,7 +31,7 @@ module.exports = function () {
   var me = this
   me.nextDialogNr = 10000000
   me.myBlz = 12345678
-  me.dialogArray = new Object()
+  me.dialogArray = {}
   me.userDB = {'test1': {'u': 'test1', 'pin': '1234'}}
   me.dbgLogNr = 1
   me.myUrl = 'http://localhost:3000/cgiBin/hbciservlet'
@@ -81,7 +81,7 @@ module.exports = function () {
           'msgs': [],
           'content': []
         }
-        for (var i = 1; i !== recvMsg.segments.length - 1; i++) {
+        for (let i = 1; i !== recvMsg.segments.length - 1; i++) {
           if (recvMsg.segments[i].name === 'HNHBK' ||
              recvMsg.segments[i].name === 'HNHBS' ||
              recvMsg.segments[i].name === 'HNSHA' ||
@@ -118,10 +118,10 @@ module.exports = function () {
           case 2:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[9010,NULL,"Verarbeitung nicht moglich"]]));break;
           case 3:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[9800,NULL,"Dialog abgebrochen!"]]));break; */
         }
-        for (var i = 0; i !== ctrl.msgs.length; i++) {
+        for (let i = 0; i !== ctrl.msgs.length; i++) {
           sendMsg.addSeg(ctrl.msgs[i])
         }
-        for (var i = 0; i !== ctrl.content.length; i++) {
+        for (let i = 0; i !== ctrl.content.length; i++) {
           sendMsg.addSeg(ctrl.content[i])
         }
       }
