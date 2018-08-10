@@ -1,7 +1,7 @@
 /*
  *     Copyright 2015 Jens Schyma jeschyma@gmail.com
  *
- *    This File is a Part of the source of Open-Fin-TS-JS-Client.
+ *    This File is a Part of the source of OpenFinTSJSClient.
  *
  *    This program is free software: you can redistribute it and/or  modify
  *    it under the terms of the GNU Affero General Public License, version 3,
@@ -29,18 +29,18 @@ var app = express()
 var myFINTSServer = new FinTSServer()
 app.configure(function () {
   app.get('/', function (req, res) {
-    res.setHeader('Content-Type', 'text/html')
-    res.send('Test FinTS Server - at /cgi-bin/hbciservlet und BLZ = 12345678')
+    res.setHeader('ContentType', 'text/html')
+    res.send('Test FinTS Server  at /cgiBin/hbciservlet und BLZ = 12345678')
   })
 
-  app.post('/cgi-bin/hbciservlet', function (req, res) {
+  app.post('/cgiBin/hbciservlet', function (req, res) {
     textBody(req, res, function (err, body) {
       // err probably means invalid HTTP protocol or some shiz.
       if (err) {
         res.statusCode = 500
         return res.end('NO U')
       }
-      res.setHeader('Content-Type', 'text/plain')
+      res.setHeader('ContentType', 'text/plain')
       res.send(myFINTSServer.handleIncomeMessage(body))
     })
   })
@@ -50,5 +50,5 @@ var server = http.createServer(app)
 console.log('Listening at IP ' + ipaddr + ' on port ' + port)
 server.listen(port, ipaddr, function () {
   var addr = server.address()
-  console.log('FinTS server running at:', addr.address + ':' + addr.port + '/cgi-bin/hbciservlet')
+  console.log('FinTS server running at:', addr.address + ':' + addr.port + '/cgiBin/hbciservlet')
 })
