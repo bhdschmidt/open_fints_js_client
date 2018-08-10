@@ -1,7 +1,7 @@
 /*
- * 	  Copyright 2015 Jens Schyma jeschyma@gmail.com
+ *     Copyright 2015 Jens Schyma jeschyma@gmail.com
  *
- *	  This File is a Part of the source of Open-Fin-TS-JS-Client.
+ *    This File is a Part of the source of Open-Fin-TS-JS-Client.
  *
  *    This program is free software: you can redistribute it and/or  modify
  *    it under the terms of the GNU Affero General Public License, version 3,
@@ -15,7 +15,7 @@
  *    You should have received a copy of the GNU Affero General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	  Please contact Jens Schyma if you are interested in a commercial license.
+ *    Please contact Jens Schyma if you are interested in a commercial license.
  *
  */
 var express = require('express')
@@ -59,12 +59,12 @@ describe('tests', function () {
     var server = http.createServer(app)
     console.log('Listening at IP ' + ipaddr + ' on port ' + port)
     server.listen(port, ipaddr, function () {
-		  var addr = server.address()
-		  console.log('FinTS server running at:', addr.address + ':' + addr.port + '/cgi-bin/hbciservlet')
-		  bankenliste['12345678'].url = 'http://' + addr.address + ':' + addr.port + '/cgi-bin/hbciservlet'
-		  myFINTSServer.my_url = bankenliste['12345678'].url
-		  myFINTSServer.my_host = addr.address + ':' + addr.port
-		  done()
+      var addr = server.address()
+      console.log('FinTS server running at:', addr.address + ':' + addr.port + '/cgi-bin/hbciservlet')
+      bankenliste['12345678'].url = 'http://' + addr.address + ':' + addr.port + '/cgi-bin/hbciservlet'
+      myFINTSServer.my_url = bankenliste['12345678'].url
+      myFINTSServer.my_host = addr.address + ':' + addr.port
+      done()
     })
   })
 

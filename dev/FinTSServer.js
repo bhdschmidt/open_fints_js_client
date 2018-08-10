@@ -1,7 +1,7 @@
 /*
- * 	  Copyright 2015 Jens Schyma jeschyma@gmail.com
+ *     Copyright 2015 Jens Schyma jeschyma@gmail.com
  *
- *	  This File is a Part of the source of Open-Fin-TS-JS-Client.
+ *    This File is a Part of the source of Open-Fin-TS-JS-Client.
  *
  *    This program is free software: you can redistribute it and/or  modify
  *    it under the terms of the GNU Affero General Public License, version 3,
@@ -15,7 +15,7 @@
  *    You should have received a copy of the GNU Affero General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- *	  Please contact Jens Schyma if you are interested in a commercial license.
+ *    Please contact Jens Schyma if you are interested in a commercial license.
  *
  */
 // Dieser FinTS 3.0 Server ist nur für Testzwecke und gibt daher auch nur Dummy Daten zurück
@@ -33,9 +33,9 @@ module.exports = function () {
   me.my_blz = 12345678
   me.dialog_array = new Object()
   me.user_db = {'test1': {'u': 'test1', 'pin': '1234'}}
-  me.dbg_log_nr	= 1
-  me.my_url		= 'http://localhost:3000/cgi-bin/hbciservlet'
-  me.my_host		= 'localhost:3000'
+  me.dbg_log_nr = 1
+  me.my_url = 'http://localhost:3000/cgi-bin/hbciservlet'
+  me.my_host = 'localhost:3000'
   me.my_debug_log = true
 
   me.handleIncomeMessage = function (txt) {
@@ -66,13 +66,13 @@ module.exports = function () {
         // Normale nachricht
         sendMsg = me.createSendMsg(recvMsg, dialog_obj)
         // Signatur prüfen
-	    		if (!me.checkSignature(recvMsg, dialog_obj)) {
-	    			sendMsg.addSeg(Helper.newSegFromArray('HIRMG', 2, [[9800, NULL, 'Dialog abgebrochen!']]))
-	    			sendMsg.addSeg(Helper.newSegFromArrayWithBez('HIRMS', 2, recvMsg.selectSegByName('HNSHA')[0].nr, [[9340, NULL, 'Pin falsch']]))
-	    			sendtxt = 'ERROR'
-	    		} else {
-	    			// alles okay
-	    		}
+        if (!me.checkSignature(recvMsg, dialog_obj)) {
+          sendMsg.addSeg(Helper.newSegFromArray('HIRMG', 2, [[9800, NULL, 'Dialog abgebrochen!']]))
+          sendMsg.addSeg(Helper.newSegFromArrayWithBez('HIRMS', 2, recvMsg.selectSegByName('HNSHA')[0].nr, [[9340, NULL, 'Pin falsch']]))
+          sendtxt = 'ERROR'
+        } else {
+          // alles okay
+        }
       }
       // 2. weiter bearbeiten
       if (sendtxt == null) {
@@ -83,10 +83,10 @@ module.exports = function () {
         }
         for (var i = 1; i != recvMsg.segments.length - 1; i++) {
           if (recvMsg.segments[i].name == 'HNHBK' ||
-					   recvMsg.segments[i].name == 'HNHBS' ||
-					   recvMsg.segments[i].name == 'HNSHA' ||
-					   recvMsg.segments[i].name == 'HNSHK') {
-					   	// nichts tun
+             recvMsg.segments[i].name == 'HNHBS' ||
+             recvMsg.segments[i].name == 'HNSHA' ||
+             recvMsg.segments[i].name == 'HNSHK') {
+            // nichts tun
           } else if (recvMsg.segments[i].name == 'HKIDN') {
             if (!me.handleHKIDN(recvMsg.segments[i], ctrl, dialog_obj, recvMsg)) { break }
           } else if (recvMsg.segments[i].name == 'HKVVB') {
@@ -114,9 +114,9 @@ module.exports = function () {
         if (gmsg_array.length > 0) {
           sendMsg.addSeg(Helper.newSegFromArray('HIRMG', 2, gmsg_array))
           /* case 0:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [["0010",NULL,"Entgegengenommen !"]]));break;
-					case 1:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[3060,NULL,"Bitte beachten Sie die enthaltenen Warnungen/Hinweise"]]));break;
-					case 2:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[9010,NULL,"Verarbeitung nicht moglich"]]));break;
-					case 3:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[9800,NULL,"Dialog abgebrochen!"]]));break; */
+          case 1:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[3060,NULL,"Bitte beachten Sie die enthaltenen Warnungen/Hinweise"]]));break;
+          case 2:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[9010,NULL,"Verarbeitung nicht moglich"]]));break;
+          case 3:sendMsg.addSeg(Helper.newSegFromArray("HIRMG", 2, [[9800,NULL,"Dialog abgebrochen!"]]));break; */
         }
         for (var i = 0; i != ctrl.msgs.length; i++) {
           sendMsg.addSeg(ctrl.msgs[i])
@@ -135,98 +135,98 @@ module.exports = function () {
   }
 
   me.getDialogFromMsg = function (recvMsg) {
-    	var id = recvMsg.selectSegByName('HNHBK')[0].getEl(3)
-    	if (id == '0') {
-    		return null
-    	} else {
-    		var obj = me.dialog_array[id]
-    		if (obj === undefined) throw new Error('Diese Dialog ID existiert nicht!')
-    		return obj
-    	}
+    var id = recvMsg.selectSegByName('HNHBK')[0].getEl(3)
+    if (id == '0') {
+      return null
+    } else {
+      var obj = me.dialog_array[id]
+      if (obj === undefined) throw new Error('Diese Dialog ID existiert nicht!')
+      return obj
+    }
   }
 
   me.checkSignature = function (recvMsg, dialog_obj) {
-    	if (recvMsg.isSigned()) {
-    		var HNSHK = recvMsg.selectSegByName('HNSHK')[0]
-    		var HNSHA = recvMsg.selectSegByName('HNSHA')[0]
-    		if (HNSHK.getEl(1).getEl(1) != 'PIN') { return false }// andere als PIN unterstützen wir nicht
-    		var pin = ''
-    		try { pin = HNSHA.getEl(3).getEl(1) } catch (e) { pin = HNSHA.getEl(3) }
-    		return me.user_db[dialog_obj.user].pin == pin
-    	} else {
-    		return true
-    	}
+    if (recvMsg.isSigned()) {
+      var HNSHK = recvMsg.selectSegByName('HNSHK')[0]
+      var HNSHA = recvMsg.selectSegByName('HNSHA')[0]
+      if (HNSHK.getEl(1).getEl(1) != 'PIN') { return false }// andere als PIN unterstützen wir nicht
+      var pin = ''
+      try { pin = HNSHA.getEl(3).getEl(1) } catch (e) { pin = HNSHA.getEl(3) }
+      return me.user_db[dialog_obj.user].pin == pin
+    } else {
+      return true
+    }
   }
 
   me.createSendMsg = function (recvMsg, dialog_obj) {
-    	var sendMsg = new Nachricht()
-    	if (recvMsg.isSigned())sendMsg.sign({'pin': '', 'tan': null, 'sys_id': dialog_obj.user_sys_id, 'server': true, 'pin_vers': '999', 'sig_id': 0})
-    	var nachrichten_nr = recvMsg.selectSegByName('HNHBK')[0].getEl(4)
-    	sendMsg.init(dialog_obj.dialog_nr, nachrichten_nr, me.my_blz, dialog_obj.user)
-    	var bezugs_deg = new DatenElementGruppe()
-    	bezugs_deg.addDE(dialog_obj.dialog_nr)
-    	bezugs_deg.addDE(nachrichten_nr)
-    	sendMsg.selectSegByName('HNHBK')[0].store.addDEG(bezugs_deg)
-    	return sendMsg
+    var sendMsg = new Nachricht()
+    if (recvMsg.isSigned())sendMsg.sign({'pin': '', 'tan': null, 'sys_id': dialog_obj.user_sys_id, 'server': true, 'pin_vers': '999', 'sig_id': 0})
+    var nachrichten_nr = recvMsg.selectSegByName('HNHBK')[0].getEl(4)
+    sendMsg.init(dialog_obj.dialog_nr, nachrichten_nr, me.my_blz, dialog_obj.user)
+    var bezugs_deg = new DatenElementGruppe()
+    bezugs_deg.addDE(dialog_obj.dialog_nr)
+    bezugs_deg.addDE(nachrichten_nr)
+    sendMsg.selectSegByName('HNHBK')[0].store.addDEG(bezugs_deg)
+    return sendMsg
   }
 
   me.handleDialogInit = function (recvMsg) {
-    	// Dialog Initialisierung
-    	var dialog_nr = 'DIA_' + (me.next_dialog_nr++)
-    	me.dialog_array[dialog_nr] = {
-    		'dialog_nr': dialog_nr,
-    		'user': '',
-    		'user_sys_id': '0',
-    		'client_name': ''
-    	}
-    	var dialog_obj = me.dialog_array[dialog_nr]
-    	var HKIDN = recvMsg.selectSegByName('HKIDN')[0]
-    	dialog_obj.user 		= HKIDN.getEl(2)
-    	dialog_obj.user_sys_id	= HKIDN.getEl(3)
-    	var HKVVB = recvMsg.selectSegByName('HKVVB')[0]
-    	// RC = 3050 BPD nicht mehr aktuell. Aktuelle Version folgt
-    	dialog_obj.client_name = HKVVB.getEl(5)
+    // Dialog Initialisierung
+    var dialog_nr = 'DIA_' + (me.next_dialog_nr++)
+    me.dialog_array[dialog_nr] = {
+      'dialog_nr': dialog_nr,
+      'user': '',
+      'user_sys_id': '0',
+      'client_name': ''
+    }
+    var dialog_obj = me.dialog_array[dialog_nr]
+    var HKIDN = recvMsg.selectSegByName('HKIDN')[0]
+    dialog_obj.user = HKIDN.getEl(2)
+    dialog_obj.user_sys_id = HKIDN.getEl(3)
+    var HKVVB = recvMsg.selectSegByName('HKVVB')[0]
+    // RC = 3050 BPD nicht mehr aktuell. Aktuelle Version folgt
+    dialog_obj.client_name = HKVVB.getEl(5)
 
-    	// 0. Send Msg erstellen
-    	var sendMsg = me.createSendMsg(recvMsg, dialog_obj)
-    	// 1. System ID setzen
-    	if (dialog_obj.user_sys_id == '0') {
-    		dialog_obj.user_sys_id = 'USER_SYS_ID'
-    	}
-    	var error = false
-    	var resp_to_seg = null
-    	// 2. prüfen ob User existiert
-    	if (me.user_db[dialog_obj.user] === undefined) {
-    		// Error Code 9210 User unbekannt
-    		resp_to_seg = Helper.newSegFromArrayWithBez('HIRMS', 2, HKIDN.nr, [[9010, NULL, 'User unbekannt']])
-    		error = true
-    	} else {
-    		// Signatur prüfen
-    		if (!me.checkSignature(recvMsg, dialog_obj)) {
-    			resp_to_seg = Helper.newSegFromArrayWithBez('HIRMS', 2, recvMsg.selectSegByName('HNSHA')[0].nr, [[9340, NULL, 'Pin falsch']])
-    			error = true
-    		}
-    	}
-    	if (error) {
-    		// Fehler hier Fehler nachrichten zurück schicken
-    		sendMsg.addSeg(Helper.newSegFromArray('HIRMG', 2, [[9800, NULL, 'Dialog abgebrochen!']]))
-    		sendMsg.addSeg(resp_to_seg)
-    		return {'e': true, 'msg': sendMsg}
-    	} else {
-    		// Bisher kein Fehler aufgetreten
-    		return {'e': false, 'msg': sendMsg, 'dia_obj': dialog_obj}
-    	}
+    // 0. Send Msg erstellen
+    var sendMsg = me.createSendMsg(recvMsg, dialog_obj)
+    // 1. System ID setzen
+    if (dialog_obj.user_sys_id == '0') {
+      dialog_obj.user_sys_id = 'USER_SYS_ID'
+    }
+    var error = false
+    var resp_to_seg = null
+    // 2. prüfen ob User existiert
+    if (me.user_db[dialog_obj.user] === undefined) {
+      // Error Code 9210 User unbekannt
+      resp_to_seg = Helper.newSegFromArrayWithBez('HIRMS', 2, HKIDN.nr, [[9010, NULL, 'User unbekannt']])
+      error = true
+    } else {
+      // Signatur prüfen
+      if (!me.checkSignature(recvMsg, dialog_obj)) {
+        resp_to_seg = Helper.newSegFromArrayWithBez('HIRMS', 2, recvMsg.selectSegByName('HNSHA')[0].nr, [[9340, NULL, 'Pin falsch']])
+        error = true
+      }
+    }
+    if (error) {
+      // Fehler hier Fehler nachrichten zurück schicken
+      sendMsg.addSeg(Helper.newSegFromArray('HIRMG', 2, [[9800, NULL, 'Dialog abgebrochen!']]))
+      sendMsg.addSeg(resp_to_seg)
+      return {'e': true, 'msg': sendMsg}
+    } else {
+      // Bisher kein Fehler aufgetreten
+      return {'e': false, 'msg': sendMsg, 'dia_obj': dialog_obj}
+    }
   }
   me.handleHKIDN = function (segment, ctrl, dialog_obj) {
-    	var bez = segment.nr
-    	return true
+    var bez = segment.nr
+    return true
   }
   me.handleHKVVB = function (segment, ctrl, dialog_obj) {
-    	var bpd_vers = segment.getEl(1)
-    	var upd_vers = segment.getEl(2)
-    	var bez = segment.nr
-    	ctrl.gmsg['3060'] = ['3060', '', 'Bitte beachten Sie die enthaltenen Warnungen/Hinweise']
-    	var msg_array = []
+    var bpd_vers = segment.getEl(1)
+    var upd_vers = segment.getEl(2)
+    var bez = segment.nr
+    ctrl.gmsg['3060'] = ['3060', '', 'Bitte beachten Sie die enthaltenen Warnungen/Hinweise']
+    var msg_array = []
     if (bpd_vers != '78') {
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIBPA', 3, bez, ['78', ['280', me.my_blz], 'FinTSJSClient Test Bank', '1', '1', '300', '500']))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIKOM', 4, bez, [['280', me.my_blz], '1', ['3', Helper.convertJSTextTo(me.my_url)], ['2', Helper.convertJSTextTo(me.my_host)]]))
@@ -292,62 +292,62 @@ module.exports = function () {
     msg_array.push(['0901', '', '*PIN gultig.'])
     msg_array.push(['0020', '', '*Dialoginitialisierung erfolgreich'])
     ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, msg_array))
-    	return true
+    return true
   }
   me.handleHKSYN = function (segment, ctrl, dialog_obj) {
-    	var bez = segment.nr
-    	ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0020', '', 'Auftrag ausgefuhrt.']]))
-    	ctrl.content.push(Helper.newSegFromArrayWithBez('HISYN', 4, bez, ['DDDA10000000000000000000000A']))
+    var bez = segment.nr
+    ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0020', '', 'Auftrag ausgefuhrt.']]))
+    ctrl.content.push(Helper.newSegFromArrayWithBez('HISYN', 4, bez, ['DDDA10000000000000000000000A']))
 
-    	return true
+    return true
   }
 
   me.handleHKEND = function (segment, ctrl, dialog_obj) {
-    	var bez = segment.nr
-    	ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
-    	ctrl.gmsg['0100'] = ['0100', '', 'Dialog beendet.']
-    	return true
+    var bez = segment.nr
+    ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
+    ctrl.gmsg['0100'] = ['0100', '', 'Dialog beendet.']
+    return true
   }
   me.handleHKSPA = function (segment, ctrl, dialog_obj) {
-    	var bez = segment.nr
-    	ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
-    	ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0020', '', 'Auftrag ausgefuehrt']]))
+    var bez = segment.nr
+    ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
+    ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0020', '', 'Auftrag ausgefuehrt']]))
     ctrl.content.push(Helper.newSegFromArrayWithBez('HISPA', 1, bez, [['J', 'DE17123456780000000001', 'GENODE00TES', '1', '', '280', '12345678'], ['J', 'DE87123456780000000002', 'GENODE00TES', '2', '', '280', '12345678']]))
-    	return true
+    return true
   }
   me.handleHKKAZ = function (segment, ctrl, dialog_obj) {
     var bez = segment.nr
     ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
     ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0020', '', '*Umsatzbereitstellung erfolgreich']]))
     var mt_490 = ''
-    mt_490	+=	'\r\n-\r\n'
-    mt_490	+=	':20:STARTUMS\r\n'
-    mt_490	+=	':25:12345678/0000000001\r\n'
-    mt_490	+=	':28C:0\r\n'
-    mt_490	+=	':60F:C150101EUR1041,23\r\n'
-    mt_490	+=	':61:150101C182,34NMSCNONREF\r\n'
-    mt_490	+=	':86:051?00UEBERWEISG?10931?20Ihre Kontonummer 0000001234\r\n'
-    mt_490	+=	'?21/Test Ueberweisung 1?22n WS EREF: 1100011011 IBAN:\r\n'
-    mt_490	+=	'?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
-    mt_490	+=	'?31?32Bank\r\n'
-    mt_490	+=	':62F:C150101EUR1223,57\r\n'
-    mt_490	+=	'-\r\n'
-    mt_490	+=	':20:STARTUMS\r\n'
-    mt_490	+=	':25:12345678/0000000001\r\n'
-    mt_490	+=	':28C:0\r\n'
-    mt_490	+=	':60F:C150301EUR1223,57\r\n'
-    mt_490	+=	':61:150301C100,03NMSCNONREF\r\n'
-    mt_490	+=	':86:051?00UEBERWEISG?10931?20Ihre Kontonummer 0000001234\r\n'
-    mt_490	+=	'?21/Test Ueberweisung 2?22n WS EREF: 1100011011 IBAN:\r\n'
-    mt_490	+=	'?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
-    mt_490	+=	'?31?32Bank\r\n'
-    mt_490	+=	':61:150301C100,00NMSCNONREF\r\n'
-    mt_490	+=	':86:051?00UEBERWEISG?10931?20Ihre Kontonummer 0000001234\r\n'
-    mt_490	+=	'?21/Test Ueberweisung 3?22n WS EREF: 1100011011 IBAN:\r\n'
-    mt_490	+=	'?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
-    mt_490	+=	'?31?32Bank\r\n'
-    mt_490	+=	':62F:C150101EUR1423,60\r\n'
-    mt_490	+=	'-\r\n'
+    mt_490 += '\r\n-\r\n'
+    mt_490 += ':20:STARTUMS\r\n'
+    mt_490 += ':25:12345678/0000000001\r\n'
+    mt_490 += ':28C:0\r\n'
+    mt_490 += ':60F:C150101EUR1041,23\r\n'
+    mt_490 += ':61:150101C182,34NMSCNONREF\r\n'
+    mt_490 += ':86:051?00UEBERWEISG?10931?20Ihre Kontonummer 0000001234\r\n'
+    mt_490 += '?21/Test Ueberweisung 1?22n WS EREF: 1100011011 IBAN:\r\n'
+    mt_490 += '?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
+    mt_490 += '?31?32Bank\r\n'
+    mt_490 += ':62F:C150101EUR1223,57\r\n'
+    mt_490 += '-\r\n'
+    mt_490 += ':20:STARTUMS\r\n'
+    mt_490 += ':25:12345678/0000000001\r\n'
+    mt_490 += ':28C:0\r\n'
+    mt_490 += ':60F:C150301EUR1223,57\r\n'
+    mt_490 += ':61:150301C100,03NMSCNONREF\r\n'
+    mt_490 += ':86:051?00UEBERWEISG?10931?20Ihre Kontonummer 0000001234\r\n'
+    mt_490 += '?21/Test Ueberweisung 2?22n WS EREF: 1100011011 IBAN:\r\n'
+    mt_490 += '?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
+    mt_490 += '?31?32Bank\r\n'
+    mt_490 += ':61:150301C100,00NMSCNONREF\r\n'
+    mt_490 += ':86:051?00UEBERWEISG?10931?20Ihre Kontonummer 0000001234\r\n'
+    mt_490 += '?21/Test Ueberweisung 3?22n WS EREF: 1100011011 IBAN:\r\n'
+    mt_490 += '?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
+    mt_490 += '?31?32Bank\r\n'
+    mt_490 += ':62F:C150101EUR1423,60\r\n'
+    mt_490 += '-\r\n'
     ctrl.content.push(Helper.newSegFromArrayWithBez('HIKAZ', 7, bez, [mt_490]))
     return true
   }
@@ -384,18 +384,18 @@ module.exports = function () {
     me.tan_referenz[nr].seg = segment
     me.tan_referenz[nr].tan = '1234'
     me.tan_referenz[nr].cb = me.handleHKCCS_step2
-    me.tan_referenz[nr].nr	= nr
-    	var bez = segment.nr
-    	ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
-    	ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0030', '', 'Auftrag empfangen - Sicherheitsfreigabe erforderlich']]))
+    me.tan_referenz[nr].nr = nr
+    var bez = segment.nr
+    ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
+    ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0030', '', 'Auftrag empfangen - Sicherheitsfreigabe erforderlich']]))
     ctrl.content.push(Helper.newSegFromArrayWithBez('HITAN', 5, HKTAN.nr, [4, NULL, nr, 'SMS wurde versandt. Bitte geben Sie diese TAN ein.']))
-    	return true
+    return true
   }
   me.handleHKCCS_step2 = function (segment, ctrl, dialog_obj, orig_seg, auf_nr) {
     var bez = segment.nr
     ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
-    	ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0020', '', '*SEPA-Einzeluberweisung erfolgreich'], ['0900', '', '*TAN entwertet.']]))
+    ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0020', '', '*SEPA-Einzeluberweisung erfolgreich'], ['0900', '', '*TAN entwertet.']]))
     ctrl.content.push(Helper.newSegFromArrayWithBez('HITAN', 5, bez, [2, NULL, auf_nr]))
-    	return true
+    return true
   }
 }
