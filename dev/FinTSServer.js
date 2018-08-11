@@ -57,7 +57,7 @@ module.exports = function () {
   me.hikas2Mode = false
 
   me.handleIncomeMessage = function (txt) {
-    var s = new Buffer(txt, 'base64').toString('utf8')
+    const s = Buffer.from(txt, 'base64').toString('utf8')
     if (me.myDebugLog) {
       console.log('Incoming: \t' + s)
     }
@@ -165,10 +165,10 @@ module.exports = function () {
       if (me.myDebugLog) {
         console.log('Send: \t' + sendtxt)
       }
-      return new Buffer(sendtxt).toString('base64')
+      return Buffer.from(sendtxt).toString('base64')
     } catch (e) {
       console.log('ErrorIn:\t' + e.toString() + 'stack:' + e.stack)
-      return new Buffer('error').toString('base64')
+      return Buffer.from('error').toString('base64')
     }
   }
 

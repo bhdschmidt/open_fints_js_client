@@ -27,10 +27,13 @@
  *
  *
  */
+
+/* global describe it after before */
+/* eslint-disable no-unused-expressions */
 'use strict'
-var express = require('express')
-var http = require('http')
-var textBody = require('body')
+// var express = require('express')
+// var http = require('http')
+// var textBody = require('body')
 var FinTSClient = require('../')
 var should = require('should')
 

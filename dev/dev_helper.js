@@ -40,7 +40,7 @@ try {
   recvMsg.parse(fints)
   var ret = recvMsg.createDebugJs()
   console.log(ret)
-  var fints = fs.writeFileSync('outFints.txt', ret)
+  fints = fs.writeFileSync('outFints.txt', ret)
 } catch (e) {
   console.log(e.toString())
 }

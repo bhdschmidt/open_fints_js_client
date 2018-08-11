@@ -28,6 +28,8 @@
  *
  */
 
+/* global describe it after before */
+/* eslint-disable no-unused-expressions */
 'use strict'
 var express = require('express')
 var http = require('http')

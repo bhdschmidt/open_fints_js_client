@@ -20,6 +20,7 @@ node_modules
 
 # app specific
 log_send_msg.txt
+logSendMsg.txt
 in_fints.txt
 out_fints.txt
 coverage

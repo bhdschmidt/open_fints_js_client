@@ -88,7 +88,7 @@ app.post('/cgiBin/hbciservletProxy', function (req2, res2) {
     }
     // create a connection
     var postData = body
-    var clearTxt2 = new Buffer(body, 'base64').toString('utf8')
+    var clearTxt2 = Buffer.from(body, 'base64').toString('utf8')
     console.log('Send: ' + clearTxt2)
     fs.appendFileSync('logProxyMsg.txt', 'Send: ' + clearTxt2 + '\n\r')
     var u = url.parse('TODO')
@@ -108,7 +108,7 @@ app.post('/cgiBin/hbciservletProxy', function (req2, res2) {
         data += chunk
       })
       res.on('end', function () {
-        var clearTxt = new Buffer(data, 'base64').toString('utf8')
+        var clearTxt = Buffer.from(data, 'base64').toString('utf8')
         console.log('Recv: ' + clearTxt)
         fs.appendFileSync('logProxyMsg.txt', 'Recv: ' + clearTxt + '\n\r')
         res2.setHeader('ContentType', 'text/plain')
