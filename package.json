@@ -22,7 +22,7 @@
     "demo": "node examples/zeige_kontoumsaetze.js log | bunyan -l trace",
     "demo_dbg": "node-debug examples/zeige_kontoumsaetze.js  | bunyan -l trace",
     "test_dbg": "node-debug _mocha -g 'test_real Test 1'",
-	"test_rundbg" : "node-debug _mocha"
+    "test_rundbg": "node-debug _mocha"
   },
   "repository": {
     "type": "git",
@@ -40,9 +40,9 @@
   "author": "Jens Schyma <jeschyma@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/jschyma/open_fints_js_client/issues"
+    "url": "https://github.com/bhdschmidt/open_fints_js_client/issues"
   },
-  "homepage": "https://github.com/jschyma/open_fints_js_client",
+  "homepage": "https://github.com/bhdschmidt/open_fints_js_client",
   "engines": {
     "node": ">= 0.10.0",
     "npm": ">= 1.0.0"
@@ -55,9 +55,15 @@
     "body": "5.0.0",
     "bunyan-live-logger": "~1.0.2",
     "cors": "^2.7.1",
-    "express": "~4.12.4",
-    "istanbul": "~0.3.5",
-    "mocha": "2.2.5",
+    "eslint": "^5.3.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "express": "^4.16.3",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.2.0",
     "should": "6.0.3"
   }
 }

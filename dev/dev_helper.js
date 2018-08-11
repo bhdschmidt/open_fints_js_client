@@ -1,7 +1,7 @@
 /*
- *  Copyright 2015-2016 Jens Schyma jeschyma@gmail.com
+ *  Copyright 20152016 Jens Schyma jeschyma@gmail.com
  *
- *  This File is a Part of the source of Open-Fin-TS-JS-Client.
+ *  This File is a Part of the source of OpenFinTSJSClient.
  *
  *
  *
@@ -9,7 +9,7 @@
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE2.0
  *  or in the LICENSE File contained in this project.
  *
  *
@@ -31,16 +31,16 @@
 // es können so Nachrichten in JS Form konvertiert werden
 var Nachricht = require('./lib/Classes.js').Nachricht
 var fs = require('fs')
-var fints = fs.readFileSync('in_fints.txt', 'utf8')
+var fints = fs.readFileSync('inFints.txt', 'utf8')
 var re = /'\n/g
 fints = fints.replace(re, "'")
 
 var recvMsg = new Nachricht()
 try {
   recvMsg.parse(fints)
-  var ret = recvMsg.create_debug_js()
+  var ret = recvMsg.createDebugJs()
   console.log(ret)
-  var fints = fs.writeFileSync('out_fints.txt', ret)
+  var fints = fs.writeFileSync('outFints.txt', ret)
 } catch (e) {
   console.log(e.toString())
 }
