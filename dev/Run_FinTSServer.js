@@ -51,35 +51,35 @@ app.use(
 )
 
 app.get('/', function (req, res) {
-  res.setHeader('ContentType', 'text/html')
-  res.send('Test FinTS Server  at /cgiBin/hbciservlet und BLZ = 12345678')
+  res.setHeader('Content-Type', 'text/html')
+  res.send('Test FinTS Server  at /cgi-bin/hbciservlet und BLZ = 12345678')
 })
 
-app.post('/cgiBin/hbciservlet', function (req, res) {
+app.post('/cgi-bin/hbciservlet', function (req, res) {
   textBody(req, res, function (err, body) {
     // err probably means invalid HTTP protocol or some shiz.
     if (err) {
       res.statusCode = 500
       return res.end('NO U')
     }
-    res.setHeader('ContentType', 'text/plain')
+    res.setHeader('Content-Type', 'text/plain')
     res.send(myFINTSServer.handleIncomeMessage(body))
   })
 })
 
-app.post('/cgiBin/hbciservlet22', function (req, res) {
+app.post('/cgi-bin/hbciservlet22', function (req, res) {
   textBody(req, res, function (err, body) {
     // err probably means invalid HTTP protocol or some shiz.
     if (err) {
       res.statusCode = 500
       return res.end('NO U')
     }
-    res.setHeader('ContentType', 'text/plain')
+    res.setHeader('Content-Type', 'text/plain')
     res.send(myFINTSServer.handleIncomeMessage(body))
   })
 })
 
-app.post('/cgiBin/hbciservletProxy', function (req2, res2) {
+app.post('/cgi-bin/hbciservlet_proxy', function (req2, res2) {
   textBody(req2, res2, function (err, body) {
     // err probably means invalid HTTP protocol or some shiz.
     if (err) {
@@ -98,8 +98,8 @@ app.post('/cgiBin/hbciservletProxy', function (req2, res2) {
       path: u.path,
       method: 'POST',
       headers: {
-        'ContentType': 'text/plain',
-        'ContentLength': postData.length
+        'ContentT-Type': 'text/plain',
+        'Content-Length': postData.length
       }
     }
     var data = ''
@@ -111,7 +111,7 @@ app.post('/cgiBin/hbciservletProxy', function (req2, res2) {
         var clearTxt = Buffer.from(data, 'base64').toString('utf8')
         console.log('Recv: ' + clearTxt)
         fs.appendFileSync('logProxyMsg.txt', 'Recv: ' + clearTxt + '\n\r')
-        res2.setHeader('ContentType', 'text/plain')
+        res2.setHeader('Content-Type', 'text/plain')
         res2.send(data)
       })
     })
@@ -130,5 +130,5 @@ console.log('Listening at IP ' + ipaddr + ' on port ' + port)
 
 server.listen(port, ipaddr, function () {
   var addr = server.address()
-  console.log('FinTS server running at:', addr.address + ':' + addr.port + '/cgiBin/hbciservlet')
+  console.log('FinTS server running at:', addr.address + ':' + addr.port + '/cgi-bin/hbciservlet')
 })

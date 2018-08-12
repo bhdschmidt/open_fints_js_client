@@ -50,7 +50,7 @@ module.exports = function () {
     }
   }
   me.dbgLogNr = 1
-  me.myUrl = 'http://localhost:' + port + '/cgiBin/hbciservlet'
+  me.myUrl = 'http://localhost:' + port + '/cgi-bin/hbciservlet'
   me.myHost = 'localhost:' + port
   me.myDebugLog = true
   me.protoVersion = 300
@@ -279,9 +279,9 @@ module.exports = function () {
     if (me.userDb[dialogObj.user] === undefined) {
       // Error Code 9210 User unbekannt
       // Es gibt hier diverse auf diverse segmente HKVVB,HNSHK,HKIDN
-      // 9931  "Sperrung des Kontos nach %1 Fehlversuchen"
-      // 9010  "Verarbeitung nicht möglich"
-      // 9210  "diverse"
+      // 9931  - "Sperrung des Kontos nach %1 Fehlversuchen"
+      // 9010  - "Verarbeitung nicht möglich"
+      // 9210  - "diverse"
       respToSeg = Helper.newSegFromArrayWithBez('HIRMS', 2, HKIDN.nr, [
         [9010, NULL, 'User unbekannt']
       ])
@@ -349,7 +349,7 @@ module.exports = function () {
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIKAZS', 5, bez, ['1', '1', ['365', 'J', 'N']]))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIKAZS', 6, bez, ['1', '1', '1', ['365', 'J', 'N']]))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIKAZS', 7, bez, ['1', '1', '1', ['365', 'J', 'N']]))
-      ctrl.content.push(Helper.newSegFromArrayWithBez('HIPPDS', 1, bez, ['1', '1', '1', ['1', 'Telekom', 'prepaid', 'N', '', '', '15;30;50', '2', 'Vodafone', 'prepaid', 'N', '', '', '15;25;50', '3', 'EPlus', 'prepaid', 'N', '', '', '15;20;30', '4', 'O2', 'prepaid', 'N', '', '', '15;20;30', '5', 'Congstar', 'prepaid', 'N', '', '', '15;30;50', '6', 'Blau', 'prepaid', 'N', '', '', '15;20;30']]))
+      ctrl.content.push(Helper.newSegFromArrayWithBez('HIPPDS', 1, bez, ['1', '1', '1', ['1', 'Telekom', 'prepaid', 'N', '', '', '15;30;50', '2', 'Vodafone', 'prepaid', 'N', '', '', '15;25;50', '3', 'E-plus', 'prepaid', 'N', '', '', '15;20;30', '4', 'O2', 'prepaid', 'N', '', '', '15;20;30', '5', 'Congstar', 'prepaid', 'N', '', '', '15;30;50', '6', 'Blau', 'prepaid', 'N', '', '', '15;20;30']]))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIPAES', 1, bez, ['1', '1', '1']))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIPROS', 3, bez, ['1', '1']))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIPSPS', 1, bez, ['1', '1', '1']))
@@ -388,7 +388,7 @@ module.exports = function () {
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIECAS', 1, bez, ['1', '1', '1', ['J', 'N', 'N', 'urn?:iso?:std?:iso?:20022?:tech?:xsd?:camt.053.001.02']]))
       ctrl.content.push(Helper.newSegFromArrayWithBez('GIVPUS', 1, bez, ['1', '1', '1', 'N']))
       ctrl.content.push(Helper.newSegFromArrayWithBez('GIVPDS', 1, bez, ['1', '1', '1', '1']))
-      ctrl.content.push(Helper.newSegFromArrayWithBez('HITANS', 5, bez, ['1', '1', '1', ['J', 'N', '0', '942', '2', 'MTAN2', 'mobileTAN', '', 'mobile TAN', '6', '1', 'SMS', '2048', '1', 'J', '1', '0', 'N', '0', '2', 'N', 'J', '00', '1', '1', '962', '2', 'HHD1.4', 'HHD', '1.4', 'SmartTAN plus manuell', '6', '1', 'Challenge', '2048', '1', 'J', '1', '0', 'N', '0', '2', 'N', 'J', '00', '1', '1', '972', '2', 'HHD1.4OPT', 'HHDOPT1', '1.4', 'SmartTAN plus optisch', '6', '1', 'Challenge', '2048', '1', 'J', '1', '0', 'N', '0', '2', 'N', 'J', '00', '1', '1']]))
+      ctrl.content.push(Helper.newSegFromArrayWithBez('HITANS', 5, bez, ['1', '1', '1', ['J', 'N', '0', '942', '2', 'MTAN2', 'mobileTAN', '', 'mobile TAN', '6', '1', 'SMS', '2048', '1', 'J', '1', '0', 'N', '0', '2', 'N', 'J', '00', '1', '1', '962', '2', 'HHD1.4', 'HHD', '1.4', 'Smart-TAN plus manuell', '6', '1', 'Challenge', '2048', '1', 'J', '1', '0', 'N', '0', '2', 'N', 'J', '00', '1', '1', '972', '2', 'HHD1.4OPT', 'HHDOPT1', '1.4', 'Smart-TAN plus optisch', '6', '1', 'Challenge', '2048', '1', 'J', '1', '0', 'N', '0', '2', 'N', 'J', '00', '1', '1']]))
       if (me.protoVersion === 300) ctrl.content.push(Helper.newSegFromArrayWithBez('HIPINS', 1, bez, ['1', '1', '1', ['5', '20', '6', 'Benutzer ID', '', 'HKSPA', 'N', 'HKKAZ', 'N', 'HKKAZ', 'N', 'HKSAL', 'N', 'HKSLA', 'J', 'HKSUB', 'J', 'HKTUA', 'J', 'HKTUB', 'N', 'HKTUE', 'J', 'HKTUL', 'J', 'HKUEB', 'J', 'HKUMB', 'J', 'HKPRO', 'N', 'HKEKA', 'N', 'HKKAZ', 'N', 'HKKAZ', 'N', 'HKPPD', 'J', 'HKPAE', 'J', 'HKPSP', 'N', 'HKQTG', 'N', 'HKSAL', 'N', 'HKCSB', 'N', 'HKCSL', 'J', 'HKCSE', 'J', 'HKCCS', 'J', 'HKCCM', 'J', 'HKDSE', 'J', 'HKBSE', 'J', 'HKDME', 'J', 'HKBME', 'J', 'HKCDB', 'N', 'HKCDL', 'J', 'HKPPD', 'J', 'HKCDN', 'J', 'HKDSB', 'N', 'HKCUB', 'N', 'HKCUM', 'J', 'HKCDE', 'J', 'HKDSW', 'J', 'HKDMC', 'J', 'HKDSC', 'J', 'HKECA', 'N', 'GKVPU', 'N', 'GKVPD', 'N', 'HKTAN', 'N', 'HKTAN', 'N']]))
       else ctrl.content.push(Helper.newSegFromArrayWithBez('DIPINS', 1, bez, ['1', '1', ['HKSPA', 'N', 'HKKAZ', 'N', 'HKKAZ', 'N', 'HKSAL', 'N', 'HKSLA', 'J', 'HKSUB', 'J', 'HKTUA', 'J', 'HKTUB', 'N', 'HKTUE', 'J', 'HKTUL', 'J', 'HKUEB', 'J', 'HKUMB', 'J', 'HKPRO', 'N', 'HKEKA', 'N', 'HKKAZ', 'N', 'HKKAZ', 'N', 'HKPPD', 'J', 'HKPAE', 'J', 'HKPSP', 'N', 'HKQTG', 'N', 'HKSAL', 'N', 'HKCSB', 'N', 'HKCSL', 'J', 'HKCSE', 'J', 'HKCCS', 'J', 'HKCCM', 'J', 'HKDSE', 'J', 'HKBSE', 'J', 'HKDME', 'J', 'HKBME', 'J', 'HKCDB', 'N', 'HKCDL', 'J', 'HKPPD', 'J', 'HKCDN', 'J', 'HKDSB', 'N', 'HKCUB', 'N', 'HKCUM', 'J', 'HKCDE', 'J', 'HKDSW', 'J', 'HKDMC', 'J', 'HKDSC', 'J', 'HKECA', 'N', 'GKVPU', 'N', 'GKVPD', 'N', 'HKTAN', 'N', 'HKTAN', 'N']]))
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIAZSS', 1, bez, ['1', '1', '1', ['1', 'N', '', '', '', '', '', '', '', '', '', '', 'HKTUA;2;0;1;811', 'HKDSC;1;0;1;811', 'HKPPD;2;0;1;811', 'HKDSE;1;0;1;811', 'HKSLA;4;0;1;811', 'HKTUE;2;0;1;811', 'HKSUB;4;0;1;811', 'HKCDL;1;0;1;811', 'HKCDB;1;0;1;811', 'HKKAZ;6;0;1;811', 'HKCSE;1;0;1;811', 'HKSAL;4;0;1;811', 'HKQTG;1;0;1;811', 'GKVPU;1;0;1;811', 'HKUMB;1;0;1;811', 'HKECA;1;0;1;811', 'HKDMC;1;0;1;811', 'HKDME;1;0;1;811', 'HKSAL;7;0;1;811', 'HKSPA;1;0;1;811', 'HKEKA;5;0;1;811', 'HKKAZ;4;0;1;811', 'HKPSP;1;0;1;811', 'HKKAZ;5;0;1;811', 'HKCSL;1;0;1;811', 'HKCDN;1;0;1;811', 'HKTUL;1;0;1;811', 'HKPPD;1;0;1;811', 'HKPAE;1;0;1;811', 'HKCCM;1;0;1;811', 'HKIDN;2;0;1;811', 'HKDSW;1;0;1;811', 'HKCUM;1;0;1;811', 'HKPRO;3;0;1;811', 'GKVPD;1;0;1;811', 'HKCDE;1;0;1;811', 'HKBSE;1;0;1;811', 'HKCSB;1;0;1;811', 'HKCCS;1;0;1;811', 'HKDSB;1;0;1;811', 'HKBME;1;0;1;811', 'HKCUB;1;0;1;811', 'HKUEB;3;0;1;811', 'HKTUB;1;0;1;811', 'HKKAZ;7;0;1;811']]))
@@ -459,7 +459,7 @@ module.exports = function () {
         ['GKVPD', '1']
       ]))
       msgArray.push(['3050', '', 'UPD nicht mehr aktuell, aktuelle Version enthalten.'])
-      msgArray.push(['3920', '', 'Zugelassene TANVerfahren fur den Benutzer', '942'])
+      msgArray.push(['3920', '', 'Zugelassene TAN-Verfahren fur den Benutzer', '942'])
     }
     msgArray.push(['0901', '', '*PIN gultig.'])
     msgArray.push(['0020', '', '*Dialoginitialisierung erfolgreich'])
@@ -504,7 +504,7 @@ module.exports = function () {
         ['0020', '', '*Umsatzbereitstellung erfolgreich']
       ]))
       var mt490 = ''
-      mt490 += '\r\n\r\n'
+      mt490 += '\r\n-\r\n'
       mt490 += ':20:STARTUMS\r\n'
       mt490 += ':25:12345678/0000000001\r\n'
       mt490 += ':28C:0\r\n'
@@ -515,7 +515,7 @@ module.exports = function () {
       mt490 += '?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
       mt490 += '?31?32Bank\r\n'
       mt490 += ':62F:C150101EUR1223,57\r\n'
-      mt490 += '\r\n'
+      mt490 += '-\r\n'
       mt490 += ':20:STARTUMS\r\n'
       mt490 += ':25:12345678/0000000001\r\n'
       mt490 += ':28C:0\r\n'
@@ -531,7 +531,7 @@ module.exports = function () {
       mt490 += '?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
       mt490 += '?31?32Bank\r\n'
       mt490 += ':62F:C150101EUR1423,60\r\n'
-      mt490 += '\r\n'
+      mt490 += '-\r\n'
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIKAZ', 7, bez, [Helper.Byte(mt490)]))
     }
 
@@ -542,7 +542,7 @@ module.exports = function () {
         ['3040', '', 'Auftrag nur teilweise ausgefuhrt', 'myContId']
       ]))
       var mt490 = ''
-      mt490 += '\r\n\r\n'
+      mt490 += '\r\n-\r\n'
       mt490 += ':20:STARTUMS\r\n'
       mt490 += ':25:12345678/0000000001\r\n'
       mt490 += ':28C:0\r\n'
@@ -553,7 +553,7 @@ module.exports = function () {
       mt490 += '?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
       mt490 += '?31?32Bank\r\n'
       mt490 += ':62F:C150101EUR1223,57\r\n'
-      mt490 += '\r\n'
+      mt490 += '-\r\n'
       mt490 += ':20:STARTUMS\r\n'
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIKAZ', 7, bez, [Helper.Byte(mt490)]))
     }
@@ -579,7 +579,7 @@ module.exports = function () {
       mt490 += '?23 DE1100000100000001234 BIC?24: GENODE11 ?1011010100\r\n'
       mt490 += '?31?32Bank\r\n'
       mt490 += ':62F:C150101EUR1423,60\r\n'
-      mt490 += '\r\n'
+      mt490 += '-\r\n'
       ctrl.content.push(Helper.newSegFromArrayWithBez('HIKAZ', 7, bez, [Helper.Byte(mt490)]))
     }
 

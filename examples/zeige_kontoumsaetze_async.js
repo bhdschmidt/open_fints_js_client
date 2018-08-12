@@ -46,7 +46,7 @@ try {
 var bankenliste = {
   '12345678': {
     'blz': 12345678,
-    'url': 'http://localhost:3000/cgiBin/hbciservlet'
+    'url': 'http://localhost:3000/cgi-bin/hbciservlet'
   },
   'undefined': {
     'url': ''

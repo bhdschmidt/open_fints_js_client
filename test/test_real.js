@@ -55,7 +55,7 @@ var mochaCatcher = function (done, cb) {
 }
 
 var bunyan = require('bunyan')
-var live = require('bunyanLiveLogger')
+var live = require('bunyan-live-logger')
 var gLog = null
 
 var logger = function (n) {
@@ -78,7 +78,7 @@ describe('testReal', function () {
     /*
     module.exports = {
       bankenliste:{
-        '12345678':{'blz':12345678,'url':"http://localhost:3000/cgiBin/hbciservlet"},
+        '12345678':{'blz':12345678,'url':"http://localhost:3000/cgi-bin/hbciservlet"},
         "undefined":{'url':""}
       },
       blz:12345678,

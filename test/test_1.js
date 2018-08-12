@@ -44,7 +44,7 @@ try {
 
 }
 var bunyan = require('bunyan')
-var live = require('bunyanLiveLogger')
+var live = require('bunyan-live-logger')
 var gLog = null
 
 var logger = function (n) {
@@ -74,7 +74,7 @@ describe('testserver', function () {
   var bankenliste = {
     '12345678': {
       'blz': 12345678,
-      'url': 'http://TOBESET/cgiBin/hbciservlet'
+      'url': 'http://TOBESET/cgi-bin/hbciservlet'
     },
     'undefined': {
       'url': ''
@@ -90,10 +90,10 @@ describe('testserver', function () {
     myFINTSServer.myDebugLog = false
     app.get('/', function (req, res) {
       res.setHeader('ContentType', 'text/html')
-      res.send('Test FinTS Server  at /cgiBin/hbciservlet und BLZ = 12345678')
+      res.send('Test FinTS Server  at /cgi-bin/hbciservlet und BLZ = 12345678')
     })
 
-    app.post('/cgiBin/hbciservlet', function (req, res) {
+    app.post('/cgi-bin/hbciservlet', function (req, res) {
       textBody(req, res, function (err, body) {
         // err probably means invalid HTTP protocol or some shiz.
         if (err) {
@@ -109,8 +109,8 @@ describe('testserver', function () {
     console.log('Listening at IP ' + ipaddr + ' on port ' + port)
     server.listen(port, ipaddr, function () {
       var addr = server.address()
-      console.log('FinTS server running at:', addr.address + ':' + addr.port + '/cgiBin/hbciservlet')
-      bankenliste['12345678'].url = 'http://' + addr.address + ':' + addr.port + '/cgiBin/hbciservlet'
+      console.log('FinTS server running at:', addr.address + ':' + addr.port + '/cgi-bin/hbciservlet')
+      bankenliste['12345678'].url = 'http://' + addr.address + ':' + addr.port + '/cgi-bin/hbciservlet'
       myFINTSServer.myUrl = bankenliste['12345678'].url
       myFINTSServer.myHost = addr.address + ':' + addr.port
       // Logger
@@ -139,6 +139,7 @@ describe('testserver', function () {
     var oldUrl = client.destUrl
     client.MsgInitDialog(mochaCatcher(done, function (error, recvMsg, hasNeuUrl) {
       if (error) {
+        console.log(error)
         throw error
       }
       client.bpd.should.have.property('versBpd', '78')
