@@ -96,7 +96,7 @@ describe('testReal', function () {
     should(credentials.pin).not.equal('')
     if (credentials && credentials.bunyanLiveLogger) {
       gLog = bunyan.createLogger({
-        name: 'testcases  testsReal',
+        name: 'testcases - testsReal',
         src: true,
         streams: [{
           level: 'trace',
@@ -113,7 +113,7 @@ describe('testReal', function () {
     }
   })
 
-  it('Test 1  MsgInitDialog', function (done) {
+  it('Test 1 - MsgInitDialog', function (done) {
     checkPreviousTests()
     var client = new FinTSClient(credentials.blz, credentials.user, credentials.pin, credentials.bankenliste, logger('Test 1'))
     var oldUrl = client.destUrl
@@ -147,7 +147,7 @@ describe('testReal', function () {
     }))
   })
 
-  it('Test 2  MsgInitDialog wrong user', function (done) {
+  it('Test 2 - MsgInitDialog wrong user', function (done) {
     checkPreviousTests()
     var client = new FinTSClient(credentials.blz, 'wrong', '12345', credentials.bankenliste, logger('Test 2'))
     var oldUrl = client.destUrl
@@ -185,7 +185,7 @@ describe('testReal', function () {
       }
     })
 
-    it('Test 3  MsgInitDialog wrong pin', function (done) {
+    it('Test 3 - MsgInitDialog wrong pin', function (done) {
       checkPreviousTests()
       testPerformed = true
       var client = new FinTSClient(credentials.blz, credentials.user, '12345', credentials.bankenliste, logger('Test 3'))
@@ -199,7 +199,7 @@ describe('testReal', function () {
     })
   })
 
-  it('Test 6  EstablishConnection', function (done) {
+  it('Test 6 - EstablishConnection', function (done) {
     checkPreviousTests()
     var client = new FinTSClient(credentials.blz, credentials.user, credentials.pin, credentials.bankenliste, logger('Test 6'))
     client.EstablishConnection(mochaCatcher(done, function (error) {
@@ -216,7 +216,7 @@ describe('testReal', function () {
     }))
   })
 
-  it('Test 7  MsgGetKontoUmsaetze', function (done) {
+  it('Test 7 - MsgGetKontoUmsaetze', function (done) {
     checkPreviousTests()
     var client = new FinTSClient(credentials.blz, credentials.user, credentials.pin, credentials.bankenliste, logger('Test 7'))
     client.EstablishConnection(mochaCatcher(done, function (error) {
@@ -245,7 +245,7 @@ describe('testReal', function () {
     }))
   })
 
-  it('Test 8  MsgGetSaldo', function (done) {
+  it('Test 8 - MsgGetSaldo', function (done) {
     checkPreviousTests()
     var client = new FinTSClient(credentials.blz, credentials.user, credentials.pin, credentials.bankenliste, logger('Test 8'))
     client.EstablishConnection(mochaCatcher(done, function (error) {

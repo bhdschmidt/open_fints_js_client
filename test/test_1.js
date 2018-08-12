@@ -89,8 +89,8 @@ describe('testserver', function () {
     myFINTSServer = new FinTSServer()
     myFINTSServer.myDebugLog = false
     app.get('/', function (req, res) {
-      res.setHeader('ContentType', 'text/html')
-      res.send('Test FinTS Server  at /cgi-bin/hbciservlet und BLZ = 12345678')
+      res.setHeader('Content-Type', 'text/html')
+      res.send('Test FinTS Server - at /cgi-bin/hbciservlet und BLZ = 12345678')
     })
 
     app.post('/cgi-bin/hbciservlet', function (req, res) {
@@ -100,7 +100,7 @@ describe('testserver', function () {
           res.statusCode = 500
           return res.end('NO U')
         }
-        res.setHeader('ContentType', 'text/plain')
+        res.setHeader('Content-Type', 'text/plain')
         res.send(myFINTSServer.handleIncomeMessage(body))
       })
     })
@@ -116,7 +116,7 @@ describe('testserver', function () {
       // Logger
       if (config && config.bunyanLiveLogger) {
         gLog = bunyan.createLogger({
-          name: 'testcases  withtestserver',
+          name: 'testcases - withtestserver',
           src: true,
           streams: [{
             level: 'trace',
@@ -134,7 +134,7 @@ describe('testserver', function () {
     })
   })
 
-  it('Test 1  MsgInitDialog', function (done) {
+  it('Test 1 - MsgInitDialog', function (done) {
     var client = new FinTSClient(12345678, 'test1', '1234', bankenliste, logger('Test 1'))
     var oldUrl = client.destUrl
     client.MsgInitDialog(mochaCatcher(done, function (error, recvMsg, hasNeuUrl) {
@@ -153,7 +153,7 @@ describe('testserver', function () {
     }))
   })
 
-  it('Test 2  MsgInitDialog wrong user', function (done) {
+  it('Test 2 - MsgInitDialog wrong user', function (done) {
     var client = new FinTSClient(12345678, 'test2', '1234', bankenliste, logger('Test 2'))
     var oldUrl = client.destUrl
     client.MsgInitDialog(mochaCatcher(done, function (error, recvMsg, hasNeuUrl) {
@@ -194,7 +194,7 @@ describe('testserver', function () {
     }))
   })
 
-  it('Test 5  MsgRequestSepa', function (done) {
+  it('Test 5 - MsgRequestSepa', function (done) {
     var client = new FinTSClient(12345678, 'test1', '1234', bankenliste, logger('Test 5'))
     client.MsgInitDialog(mochaCatcher(done, function (error, recvMsg, hasNeuUrl) {
       if (error) {
@@ -220,7 +220,7 @@ describe('testserver', function () {
     }))
   })
 
-  it('Test 5.1  MsgRequestSepa  failed connection', function (done) {
+  it('Test 5.1 - MsgRequestSepa  failed connection', function (done) {
     var client = new FinTSClient(12345678, 'test1', '1234', bankenliste, logger('Test 5.1'))
     client.MsgInitDialog(mochaCatcher(done, function (error, recvMsg, hasNeuUrl) {
       if (error) {
@@ -263,7 +263,7 @@ describe('testserver', function () {
     }))
   })
 
-  it('Test 6.1  EstablishConnection  Test Wrong User', function (done) {
+  it('Test 6.1 - EstablishConnection - Test Wrong User', function (done) {
     var client = new FinTSClient(12345678, 'test1WrongUser', '1234', bankenliste, logger('Test 6.1'))
     client.EstablishConnection(mochaCatcher(done, function (error) {
       if (error) {
@@ -274,7 +274,7 @@ describe('testserver', function () {
     }))
   })
 
-  it('Test 6.2  EstablishConnection  Test Wrong password', function (done) {
+  it('Test 6.2 - EstablishConnection - Test Wrong password', function (done) {
     var client = new FinTSClient(12345678, 'test1', '123d', bankenliste, logger('Test 6.2'))
     client.EstablishConnection(mochaCatcher(done, function (error) {
       if (error) {
@@ -285,7 +285,7 @@ describe('testserver', function () {
     }))
   })
 
-  it('Test 7  MsgGetKontoUmsaetze', function (done) {
+  it('Test 7 - MsgGetKontoUmsaetze', function (done) {
     var client = new FinTSClient(12345678, 'test1', '1234', bankenliste, logger('Test 7'))
     client.EstablishConnection(mochaCatcher(done, function (error) {
       if (error) {
@@ -327,7 +327,7 @@ describe('testserver', function () {
       myFINTSServer.hikas2Mode = true
     })
 
-    it('Test 7.1  MsgGetKontoUmsaetze  mit Aufsetzpunkt', function (done) {
+    it('Test 7.1 - MsgGetKontoUmsaetze - mit Aufsetzpunkt', function (done) {
       var client = new FinTSClient(12345678, 'test1', '1234', bankenliste, logger('Test 7.1'))
       client.EstablishConnection(mochaCatcher(done, function (error) {
         if (error) {
@@ -358,7 +358,7 @@ describe('testserver', function () {
     })
   })
 
-  it('Test 8  MsgGetSaldo', function (done) {
+  it('Test 8 - MsgGetSaldo', function (done) {
     var client = new FinTSClient(12345678, 'test1', '1234', bankenliste, logger('Test 8'))
     client.EstablishConnection(mochaCatcher(done, function (error) {
       if (error) {
@@ -409,7 +409,7 @@ describe('testserver', function () {
     })
   })
 
-  it('Test 9  MsgGetKontoUmsaetze  test series calls', function (done) {
+  it('Test 9 - MsgGetKontoUmsaetze - test series calls', function (done) {
     var client = new FinTSClient(12345678, 'test1', '1234', bankenliste, logger('Test 9'))
     client.EstablishConnection(mochaCatcher(done, function (error) {
       if (error) {
