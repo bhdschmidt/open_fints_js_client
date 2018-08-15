@@ -139,6 +139,10 @@ module.exports = function () {
             if (!me.handleHKSAL(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) {
               break
             }
+          } else if (recvMsg.segments[i].name === 'HKCCS') {
+            if (!me.handleHKCCS(recvMsg.segments[i], ctrl, dialogObj, recvMsg)) {
+              break
+            }
           }
         }
 
@@ -624,6 +628,27 @@ module.exports = function () {
         ['DE92232323', 'GENOT', NULL, 280, 12346789], 'Normalsparen', 'EUR', ['C', '4,36', 'EUR', '20150219']
       ]))
     }
+    return true
+  }
+  me.handleHKCCS = function (segment, ctrl, dialogObj, recvMsg) {
+    var HKTAN = recvMsg.selectSegByName('HKTAN')[0]
+    var nr = 'AUFTRAGSREF' + (me.nextTanNr++)
+    me.tanReferenz[nr] = {}
+    me.tanReferenz[nr].seg = segment
+    me.tanReferenz[nr].tan = '1234'
+    me.tanReferenz[nr].cb = me.handleHKCCSStep2
+    me.tanReferenz[nr].nr = nr
+    var bez = segment.nr
+    ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
+    ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0030', '', 'Auftrag empfangen  Sicherheitsfreigabe erforderlich']]))
+    ctrl.content.push(Helper.newSegFromArrayWithBez('HITAN', 5, HKTAN.nr, [4, NULL, nr, 'SMS wurde versandt. Bitte geben Sie diese TAN ein.']))
+    return true
+  }
+  me.handleHKCCSStep2 = function (segment, ctrl, dialogObj, origSeg, aufNr) {
+    var bez = segment.nr
+    ctrl.gmsg['0010'] = ['0010', '', 'Nachricht entgegengenommen.']
+    ctrl.msgs.push(Helper.newSegFromArrayWithBez('HIRMS', 2, bez, [['0020', '', '*SEPAEinzeluberweisung erfolgreich'], ['0900', '', '*TAN entwertet.']]))
+    ctrl.content.push(Helper.newSegFromArrayWithBez('HITAN', 5, bez, [2, NULL, aufNr]))
     return true
   }
 }

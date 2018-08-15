@@ -321,6 +321,55 @@ describe('testserver', function () {
       }
     }))
   })
+  it('Test 8 - MsgSEPASingleTransfer - falsche TAN', function (done) {
+    var client = new FinTSClient(12345678, 'test1', '1234', bankenliste, logger('Test 8'))
+    client.EstablishConnection(mochaCatcher(done, function (error) {
+      if (error) {
+        throw error
+      } else {
+        client.konten[0].sepaData.should.not.equal(null)
+        client.MsgSEPASingleTransfer(client.konten[0].sepaData, {iban: 'DE60123456780000000003', bic: 'GENODE00TES'}, 'Max Muster', 'Verwzweck', 10.99, mochaCatcher(done, function (error2, rMsg, sendTanResponse) {
+          if (error2) {
+            throw error2
+          } else {
+            // Alles gut, wir müssen tan senden
+            should(sendTanResponse).not.equal(null)
+            sendTanResponse.should.be.an.Function
+            sendTanResponse('FALSCH', function (error3, rMsg3) {
+              should(error3).not.equal(null)
+              done()
+            })
+          }
+        }))
+      }
+    }))
+  })
+  it('Test 9 - MsgSEPASingleTransfer - erfolgreich', function (done) {
+    var client = new FinTSClient(12345678, 'test1', '1234', bankenliste, logger('Test 9'))
+    client.EstablishConnection(mochaCatcher(done, function (error) {
+      if (error) {
+        throw error
+      } else {
+        client.konten[0].sepaData.should.not.equal(null)
+        client.MsgSEPASingleTransfer(client.konten[0].sepaData, {iban: 'DE60123456780000000003', bic: 'GENODE00TES'}, 'Max Muster', 'Verwzweck', 10.99, mochaCatcher(done, function (error2, rMsg, sendTanResponse) {
+          if (error2) {
+            throw error2
+          } else {
+            // Alles gut, wir müssen tan senden
+            should(sendTanResponse).not.equal(null)
+            sendTanResponse.should.be.an.Function
+            sendTanResponse('1234', function (error3, rMsg3) {
+              if (error3) {
+                throw error3
+              } else {
+                done()
+              }
+            })
+          }
+        }))
+      }
+    }))
+  })
 
   describe('mit Aufsetzpunkt', function () {
     before(function () {
